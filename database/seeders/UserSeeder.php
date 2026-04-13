@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create 2 admins
+        // 2 admin creer
         User::create([
             'name'     => 'Admin Mahmoud',
             'email'    => 'admin@linkedin.ma',
@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
             'role'     => 'admin',
         ]);
 
-        // Create 5 recruteurs with 2-3 offres each
+        // 5 recruteur avec 2 a 3 offres
         for ($i = 1; $i <= 5; $i++) {
             $recruteur = User::create([
                 'name'     => "Recruteur $i",
@@ -41,13 +41,13 @@ class UserSeeder extends Seeder
                 'role'     => 'recruteur',
             ]);
 
-            // 2 to 3 offres per recruteur
+            // 2 a 3 offres par recruteur
             Offre::factory(rand(2, 3))->create([
                 'user_id' => $recruteur->id,
             ]);
         }
 
-        // Create 10 candidats with profil and competences
+        // Creer 10 candidats
         $competences = Competence::all();
 
         for ($i = 1; $i <= 10; $i++) {
@@ -62,7 +62,7 @@ class UserSeeder extends Seeder
             $profil = Profil::factory()->create([
                 'user_id' => $candidat->id,
             ]);
-            // attach 2 to 4 random competences
+            // attach 2, 4 random competences
             $randomCompetences = $competences->random(rand(2, 4));
             foreach ($randomCompetences as $competence) {
                 $profil->competences()->attach($competence->id, [
