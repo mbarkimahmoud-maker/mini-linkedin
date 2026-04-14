@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\CandidatureController;
 use App\Http\Controllers\OffreController;
 
 // ROUTES PUBLIQUES pas besoin d'être connecté
@@ -32,5 +33,16 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/offres',           [OffreController::class, 'store']);
         Route::put('/offres/{offre}',    [OffreController::class, 'update']);
         Route::delete('/offres/{offre}', [OffreController::class, 'destroy']);
+    });
+
+    // ── Candidatures ─────────────────────────────────
+     Route::middleware('role:recruteur')->group(function () {
+        Route::patch('/candidatures/{candidature}/statut', [CandidatureController::class, 'changerStatut']);
+        Route::get('/offres/{offre}/candidatures',         [CandidatureController::class, 'offreCandidatures']);
+    });
+
+    Route::middleware('role:candidat')->group(function () {
+        Route::post('/offres/{offre}/candidater', [CandidatureController::class, 'postuler']);
+        Route::get('/mes-candidatures',           [CandidatureController::class, 'mesCandidatures']);
     });
 });
