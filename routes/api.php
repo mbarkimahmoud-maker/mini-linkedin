@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfilController;
@@ -44,5 +45,12 @@ Route::middleware('auth:api')->group(function () {
     Route::middleware('role:candidat')->group(function () {
         Route::post('/offres/{offre}/candidater', [CandidatureController::class, 'postuler']);
         Route::get('/mes-candidatures',           [CandidatureController::class, 'mesCandidatures']);
+    });
+
+    Route::middleware('role:admin')->prefix('admin')->group(function(){
+        Route::get('/users',[AdminController::class,'listeUsers']);
+        Route::delete('/users/{user}',[AdminController::class,'supprimerUser']);
+        Route::patch('/offres/{offre}', [AdminController::class, 'toggleoffre']);
+        
     });
 });
